@@ -1,0 +1,35 @@
+{% load blog_tags %}
+
+<footer class="w3-container w3-padding-32 w3-dark-grey">
+  <div class="w3-row-padding">
+    <div class="w3-third">
+      <h3>LATEST POSTS</h3>
+       {% show_latest_posts 4 %}
+    </div>
+    <div class="w3-third">
+      <h3>MOST COMMENTED POSTS</h3>
+      {% get_most_commented_posts as most_commented_posts %}
+      <ul class="w3-ul w3-hoverable">
+        {% for post in most_commented_posts %}
+        <li class="w3-padding-16">
+            <span class="w3-large"><a href="{{ post.get_absolute_url }}" style="text-decoration: none; color: white">{{ post.title }}</a></span>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="w3-third">
+      <h3>POPULAR TAGS</h3>
+      <p>
+        {% for tag in common_tags %}
+<!--        <span class="w3-tag w3-black w3-margin-bottom">Travel</span>-->
+          <span class="w3-tag w3-grey w3-small w3-margin-bottom">
+              <a href="{% url 'post_list_by_tag' tag.slug %}" style="text-decoration:none; color: white">{{ tag.name }}</a></span>
+        {% endfor %}
+      </p>
+    </div>
+
+  </div>
+  </footer>
+
+  <div class="w3-black w3-center w3-padding-24">Powered by OLIEVKO-GROUP in 2020</div>
+

@@ -1,0 +1,90 @@
+{% extends "index.html" %}
+{% load static %}
+{% block stylesheet %}
+<link rel="stylesheet" href="{% static 'css/topnav.css' %}">
+<style>
+
+.btn-group button {
+    background-color: none; /* Green background */
+    border: 1px solid green; /* Green border */
+    color: white; /* White text */
+    cursor: pointer; /* Pointer/hand icon */
+    float: left; /* Float the buttons side by side */
+}
+
+/* Clear floats (clearfix hack) */
+.btn-group:after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.btn-group button:not(:last-child) {
+    border-right: none; /* Prevent double borders */
+}
+
+/* Add a background color on hover */
+.btn-group button:hover {
+    background-color: #3e8e41;
+}
+
+</style>
+{% endblock %}
+{% block title %}Project detail{% endblock %}
+{% load crispy_forms_tags %}
+{% load social_share %}
+{% block portfolio %}
+
+<!--<header id="portfolio">-->
+<!--    <a href="#"><img src="/w3images/avatar_g2.jpg" style="width:65px;" class="w3-circle w3-right w3-margin w3-hide-large w3-hover-opacity"></a>-->
+<!--    <span class="w3-button w3-hide-large w3-xxlarge w3-hover-text-grey" onclick="w3_open()"><i class="fa fa-bars"></i></span>-->
+<!--    <div class="w3-container">-->
+
+<!--    <h1><b>{{ project.title }}</b></h1>-->
+
+<!--    <div class="w3-section w3-bottombar w3-padding-16">-->
+<!--        <span class="w3-margin-right">Filter:</span>-->
+<!--        <button class="w3-button w3-black "><a href="{% url 'project_list' %}" style="text-decoration: none; color: white">ALL</a></button>-->
+<!--        {% for c in categories %}-->
+<!--        <button class="w3-button w3-white "><a href="{{ c.get_absolute_url }}" style="text-decoration: none; color:black">{{ c.name }}</a></button>-->
+<!--        {% endfor %}-->
+<!--    </div>-->
+
+<!--    </div>-->
+
+<!--</header>-->
+
+{% include "includes/projectheader.html"%}
+
+<div class="w3-row-padding">
+    <div class="w3-half">
+
+        {% for item in images %}
+            <img src="{{ item.image.url }}" alt="{{ item.caption }}" width="100%" style="border: 2px solid">
+        {% endfor %}
+    </div>
+    <div class="w3-half">
+        <h5><b>About the project:</b></h5>
+        <p>{{ project.description| safe }}</p>
+        <br>
+        <h5><b>Technology used:</b></h5>
+        <p>{{ project.technology }}</p>
+        <br>
+        <h5><b>Share project on:</b></h5>
+        <div class="btn-group">
+            <button>
+                {% post_to_facebook object_or_url '<i class="fa fa-facebook" style="padding:10px; font-size:30px; width:50px; text-align:center; text-decoration:none; margin:5px 2px; background:#3B5998; color:white;"></i>' %}
+            </button>
+            <button>
+                {% post_to_twitter "New Project: {{project.title}}. Check it out!" object_or_url '<i class="fa fa-twitter" style="padding:10px; font-size:30px; width:50px; text-align:center; text-decoration:none; margin:5px 2px; background:#55ACEE; color:white;"></i>' %}
+            </button>
+            <button>
+                {% post_to_linkedin project.title object_or_url '<i class="fa fa-linkedin" style="padding:10px; font-size:30px; width:50px; text-align:center; text-decoration:none; margin:5px 2px; background: #007bb5; color:white;"></i>' %}
+            </button>
+            <button>
+                {% send_email project.title "New Project: {{project.title}}. Check it out!" object_or_url '<i class="fa fa-envelope" style="padding:10px; font-size:30px; width:50px; text-align:center; text-decoration:none; margin:5px 2px; background: #dd4b39; color: white;"></i>' %}
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}

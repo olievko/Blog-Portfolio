@@ -1,0 +1,35 @@
+{% load crispy_forms_tags %}
+<div class="w3-container w3-padding-large w3-grey">
+    <h4 id="contact"><b>Contact Me</b></h4>
+    {% with personal_info|first as personal_info %}
+    <div class="w3-row-padding w3-center w3-padding-24" style="margin:0 -16px">
+      {% if personal_info.email %}
+      <div class="w3-third w3-dark-grey">
+        <p><i class="fa fa-envelope w3-xxlarge w3-text-light-grey"></i></p>
+          <p><a href="mailto:{{ personal_info.email }}" style="text-decoration: none; color: white">{{ personal_info.email }}</a></p>
+      </div>
+      {% endif %}
+      {% if personal_info.locality and personal_info.country %}
+      <div class="w3-third w3-teal">
+        <p><i class="fa fa-map-marker w3-xxlarge w3-text-light-grey"></i></p>
+        <p>{{personal_info.locality}}, {{personal_info.country}}</p>
+      </div>
+      {% endif %}
+      {% if personal_info.phone %}
+      <div class="w3-third w3-dark-grey">
+        <p><i class="fa fa-phone w3-xxlarge w3-text-light-grey"></i></p>
+        <p><a href="tel:+380{{ personal_info.phone }}" style="text-decoration: none; color: white">+380 {{personal_info.phone}}</a></p>
+      </div>
+      {% endif %}
+    </div>
+    {% endwith %}
+
+    <hr class="w3-opacity">
+    <div class="container">
+        <form method="post" novalidate>
+          {% csrf_token %}
+          {{ form|crispy }}
+          <button type="submit" class="w3-button w3-black w3-margin-bottom"><i class="fa fa-paper-plane w3-margin-right"></i>Send Message</button>
+        </form>
+    </div>
+  </div>

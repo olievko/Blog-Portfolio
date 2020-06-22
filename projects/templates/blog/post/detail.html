@@ -1,0 +1,122 @@
+{% extends "index.html" %}
+{% load static %}
+{% load blog_tags %}
+{% load social_share %}
+{% block title %}{{ post.title }}{% endblock %}
+{% block stylesheet %}
+
+<style>
+
+.topnav .search-container {
+  float: right;
+}
+
+.topnav input[type=text] {
+  padding: 6px;
+  margin-top: 8px;
+  font-size: 17px;
+  border: none;
+}
+
+.topnav .search-container button {
+  float: right;
+  padding: 6px 10px;
+  margin-top: 8px;
+  margin-right: 16px;
+  background: #ddd;
+  font-size: 17px;
+  border: none;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 600px) {
+  .topnav .search-container {
+    float: none;
+  }
+
+</style>
+{% endblock %}
+
+
+{% load crispy_forms_tags %}
+
+{% block page %}
+    <!-- Header -->
+    {% include "includes/blogheader.html"%}
+    <!-- End block Header -->
+    <div class="w3-row-padding">
+        <div class="w3-container w3-margin-bottom">
+            <h1>{{ post.title }}</h1>
+            <p>Published {{ post.publish }} by {{ post.author }}</p>
+            {% for item in images %}
+                {% if item.image %}
+                    <img src="{{ item.thumb.url }}" alt="{{ item.caption }}" class="w3-hover-opacity">
+                {% else %}
+                    <p></p>
+                {% endif %}
+            {% endfor %}
+            {{ post.body|markdown }}
+            <p><a href="{% url 'post_share' post.id %}">Share this post</a></p>
+
+             <div class="btn-group">
+            <button>
+                {% post_to_facebook object_or_url '<i class="fa fa-facebook" style="padding:10px; font-size:30px; width:50px; text-align:center; text-decoration:none; margin:5px 2px; background:#3B5998; color:white;"></i>' %}
+            </button>
+            <button>
+                {% post_to_twitter "New Post: {{post.title}}. Check it out!" object_or_url '<i class="fa fa-twitter" style="padding:10px; font-size:30px; width:50px; text-align:center; text-decoration:none; margin:5px 2px; background:#55ACEE; color:white;"></i>' %}
+            </button>
+            <button>
+                {% post_to_linkedin post.title object_or_url '<i class="fa fa-linkedin" style="padding:10px; font-size:30px; width:50px; text-align:center; text-decoration:none; margin:5px 2px; background: #007bb5; color:white;"></i>' %}
+            </button>
+            <button>
+                {% send_email post.title "New Post: {{post.title}}. Check it out!" object_or_url '<i class="fa fa-envelope" style="padding:10px; font-size:30px; width:50px; text-align:center; text-decoration:none; margin:5px 2px; background: #dd4b39; color: white;"></i>' %}
+            </button>
+        </div>
+
+                    <h3>Similar posts</h3>
+            {% for post in similar_posts %}
+                <p><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></p>
+            {% empty %}
+                There are no similar posts yet.
+            {% endfor %}
+            {% with comments.count as total_comments %}
+                <h3>{{ total_comments }} comment{{ total_comments|pluralize }}</h3>
+            {% endwith %}
+            {% for comment in comments %}
+                <div class="comment">
+                    <p>
+                    Comment {{ forloop.counter }} by {{ comment.name }}
+                    {{ comment.created }}
+                    </p>
+                    {{ comment.body|linebreaks }}
+                </div>
+            {% empty %}
+                <p>There are no comments yet.</p>
+            {% endfor %}
+
+            {% if user.is_authenticated %}
+                {% if new_comment %}
+                    <h3>Your comment has been added !</h3>
+                {% else %}
+                    <div class="w3-container w3-padding-large w3-grey">
+                        <h4 id="contact"><b>Feel free to add a new comment</b></h4>
+                        <hr class="w3-opacity">
+                        <div class="container">
+                            <form action="." method="post">
+                              {% csrf_token %}
+                              {{ comment_form|crispy }}
+                              <br>
+                              <button type="submit" class="w3-button w3-black w3-margin-bottom"><i class="fa fa-paper-plane w3-margin-right"></i>Add Comment</button>
+                            </form>
+                        </div>
+                    </div>
+                {% endif %}
+            {% else %}
+                <h3>Please <a href="{% url 'login' %}">Log in</a> or <a href="{% url 'register' %}">Sign up</a> to add a new comment</h3>
+            {% endif %}
+        </div>
+    </div>
+    <!-- Footer -->
+    {% include "includes/footer.html"%}
+    <!-- End page content -->
+{% endblock page %}

@@ -1,0 +1,200 @@
+{% load static %}
+{% block stylesheet %}
+<link rel="stylesheet" href="{% static 'css/profile.css' %}">
+<style>
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  grid-gap: 10px;
+  background-color: inherit;
+  padding: 10px;
+}
+
+.grid-container > div {
+  background-color: inherit;
+  text-align: center;
+  font-size: 25px;
+}
+</style>
+{% endblock %}
+
+{% with personal_info|first as personal_info %}
+
+<div class="w3-container w3-padding-large" style="margin-bottom:32px">
+    <h4 id="about"><b>About Me</b></h4>
+    <p>{{ personal_info.overview}}</p>
+
+    {% if personal_info.years_experience and personal_info.partners and personal_info.completed_projects and personal_info.clients  %}
+    <br>
+    <div class="w3-row w3-center w3-dark-grey w3-padding-16 w3-section">
+      <div class="w3-quarter w3-section">
+        <span class="w3-xlarge">{{ personal_info.years_experience }}+</span><br>
+        Years Experience
+      </div>
+      <div class="w3-quarter w3-section">
+        <span class="w3-xlarge">{{ personal_info.partners }}+</span><br>
+        Partners
+      </div>
+      <div class="w3-quarter w3-section">
+        <span class="w3-xlarge">{{ personal_info.completed_projects }}+</span><br>
+        Projects Done
+      </div>
+      <div class="w3-quarter w3-section">
+        <span class="w3-xlarge">{{ personal_info.clients }}+</span><br>
+        Happy Clients
+      </div>
+    </div>
+    {% endif %}
+
+    <hr>
+    <h4>Technical Skills</h4>
+      <div class="w3-section w3-bottombar w3-padding-16">
+      <span class="w3-margin-right">Filter:</span>
+      <button class="w3-button w3-black "><a href="{% url 'project_list' %}" style="text-decoration: none; color: white">ALL</a></button>
+      {% for c in categories %}
+        <button class="w3-button w3-white ">
+            <a href="{{ c.get_absolute_url }}" style="text-decoration: none; color:black">{{ c.name }}</a>
+        </button>
+      {% endfor %}
+      </div>
+    <!-- Progress bars / Skills -->
+    {% for skillset in skill_sets %}
+        <br>
+        <p><b>{{ skillset.name }}</b></p>
+            <div class="grid-container">
+                {% for s in skillset.skill_set.all %}
+                <div class="w3-container w3-dark-grey w3-padding w3-center">
+                    <h4>{{s.name }}</h4>
+                    <div style="margin-left:30%" class="progress-circle over50 p{{s.level}}">
+                        <span>{{ s.level }}</span>
+                        <div class="left-half-clipper">
+                            <div class="first50-bar"></div>
+                            <div class="value-bar"></div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+    {% endfor %}
+
+    {% if personal_info.resume_file %}
+    <p>
+      <button class="w3-button w3-dark-grey w3-padding-large w3-margin-top w3-margin-bottom">
+          <i class="fa fa-download w3-margin-right"></i><a href="{{ personal_info.resume_file.url }}" style="text-decoration: none; color: white">Download Resume</a>
+      </button>
+    </p>
+    {% endif %}
+    <hr>
+
+    <h4>How much I charge</h4>
+    <div class="w3-section w3-bottombar w3-padding-16">
+      <span class="w3-margin-right">Filter:</span>
+      <button class="w3-button w3-black "><a href="{% url 'project_list' %}" style="text-decoration: none; color: white">ALL</a></button>
+      {% for c in categories %}
+        <button class="w3-button w3-white ">
+            <a href="{{ c.get_absolute_url }}" style="text-decoration: none; color:black">{{ c.name }}</a>
+        </button>
+      {% endfor %}
+    </div>
+    <p>These prices do depend on the size of your site and the features of your site. Depending on your website, you may pay less (or more) than these estimates.
+    View the average cost for upfront and ongoing website expenses, by business type, below.</p>
+    <!-- Pricing Tables -->
+    <div class="w3-row-padding" style="margin:0 -16px">
+
+    {% for p in prices %}
+      {% if p.type == "Simple" %}
+      <div class="w3-third w3-margin-bottom">
+        <ul class="w3-ul w3-border w3-white w3-center w3-opacity w3-hover-opacity-off">
+
+            <li class="w3-black w3-xlarge w3-padding-32">{{ p.type }}</li>
+            {% if p.name %}
+            <li class="w3-padding-16"><b>{{ p.name }}</b></li>
+            {% endif %}
+            {% if p.description %}
+            <li class="w3-padding-16">{{ p.description }}</li>
+            {% endif %}
+            {% if p.instrument %}
+            <li class="w3-padding-16">{{ p.instrument }}</li>
+            {% endif %}
+            {% if p.time_delivery %}
+            <li class="w3-padding-16">{{ p.time_delivery}} days</li>
+            {% endif %}
+            {% if p.support %}
+            <li class="w3-padding-16">{{ p.support }}</li>
+            {% endif %}
+            {% if p.price %}
+            <li class="w3-padding-16"><h2>$ {{ p.price }}</h2>
+<!--            <span class="w3-opacity">per month</span>-->
+            </li>
+            {% endif %}
+          <li class="w3-light-grey w3-padding-24">
+              <button class="w3-button w3-teal w3-padding-large w3-hover-black"><a href="#contact" style="text-decoration: none; color: white">Project Inquiry</a></button>
+          </li>
+        </ul>
+      </div>
+      {% endif %}
+      {% if p.type == "Middle" %}
+      <div class="w3-third w3-margin-bottom">
+        <ul class="w3-ul w3-border w3-white w3-center w3-opacity w3-hover-opacity-off">
+            <li class="w3-teal w3-xlarge w3-padding-32">{{ p.type }}</li>
+            {% if p.name %}
+            <li class="w3-padding-16"><b>{{ p.name }}</b></li>
+            {% endif %}
+            {% if p.description %}
+            <li class="w3-padding-16">{{ p.description }}</li>
+            {% endif %}
+            {% if p.instrument %}
+            <li class="w3-padding-16">{{ p.instrument }}</li>
+            {% endif %}
+            {% if p.time_delivery %}
+            <li class="w3-padding-16">{{ p.time_delivery}} days</li>
+            {% endif %}
+            {% if p.support %}
+            <li class="w3-padding-16">{{ p.support }}</li>
+            {% endif %}
+            {% if p.price %}
+            <li class="w3-padding-16"><h2>$ {{ p.price }}</h2>
+<!--            <span class="w3-opacity">per month</span>-->
+            </li>
+            {% endif %}
+          <li class="w3-light-grey w3-padding-24">
+              <button class="w3-button w3-teal w3-padding-large w3-hover-black"><a href="#contact" style="text-decoration: none; color: white">Project Inquiry</a></button>
+          </li>
+        </ul>
+      </div>
+      {% endif %}
+      {% if p.type == "Complex" %}
+      <div class="w3-third">
+        <ul class="w3-ul w3-border w3-white w3-center w3-opacity w3-hover-opacity-off">
+            <li class="w3-black w3-xlarge w3-padding-32">{{ p.type }}</li>
+            {% if p.name %}
+            <li class="w3-padding-16"><b>{{ p.name }}</b></li>
+            {% endif %}
+            {% if p.description %}
+            <li class="w3-padding-16">{{ p.description }}</li>
+            {% endif %}
+            {% if p.instrument %}
+            <li class="w3-padding-16">{{ p.instrument }}</li>
+            {% endif %}
+            {% if p.time_delivery %}
+            <li class="w3-padding-16">{{ p.time_delivery}} days</li>
+            {% endif %}
+            {% if p.support %}
+            <li class="w3-padding-16">{{ p.support }}</li>
+            {% endif %}
+            {% if p.price %}
+            <li class="w3-padding-16"><h2>$ {{ p.price }}</h2>
+<!--            <span class="w3-opacity">per month</span>-->
+            </li>
+            {% endif %}
+            <li class="w3-light-grey w3-padding-24">
+              <button class="w3-button w3-teal w3-padding-large w3-hover-black"><a href="#contact" style="text-decoration: none; color: white">Project Inquiry</a></button>
+            </li>
+        </ul>
+      </div>
+      {% endif %}
+    {% endfor %}
+    </div>
+  </div>
+{% endwith %}

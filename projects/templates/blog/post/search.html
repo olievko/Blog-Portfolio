@@ -1,0 +1,72 @@
+{% extends "index.html" %}
+{% load static %}
+{% block title %}Search{% endblock %}
+{% block stylesheet %}
+<style>
+
+.topnav .search-container {
+  float: right;
+}
+
+.topnav input[type=text] {
+  padding: 6px;
+  margin-top: 8px;
+  font-size: 17px;
+  border: none;
+}
+
+.topnav .search-container button {
+  float: right;
+  padding: 6px 10px;
+  margin-top: 8px;
+  margin-right: 16px;
+  background: #ddd;
+  font-size: 17px;
+  border: none;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 600px) {
+  .topnav .search-container {
+    float: none;
+  }
+
+</style>
+{% endblock %}
+{% load crispy_forms_tags %}
+
+{% block page %}
+<!-- Header -->
+{% include "includes/blogheader.html"%}
+<!-- End block Header -->
+<div class="w3-row-padding">
+    <div class="w3-container w3-margin-bottom">
+    {% if query %}
+        <h1>Posts containing "{{ query }}"</h1>
+        <h3>
+            {% with results.count as total_results %}
+                Found {{ total_results }} result{{ total_results|pluralize }}
+            {% endwith %}
+        </h3>
+        {% for post in results %}
+            <h4><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h4>
+            {{ post.body|truncatewords:5 }}
+        {% empty %}
+            <p>There are no results for your query.</p>
+        {% endfor %}
+
+        <p><a href="{% url 'post_search' %}">Search again</a></p>
+        {% else %}
+            <h1>Search for posts</h1>
+
+            <form action="." method="get">
+                {{ form|crispy }}
+                <div class="text-center">
+                    <button type="submit" class="btn btn-success">Search</button>
+                </div>
+            </form>
+
+    {% endif %}
+    </div>
+</div>
+{% endblock page %}
