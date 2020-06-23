@@ -1,19 +1,44 @@
 {% load static %}
 <!DOCTYPE html>
 <html>
-<title>Portfolio</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-170486423-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
 
-<style>
-body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", sans-serif}
-</style>
+    gtag('config', 'UA-170486423-1');
+  </script>
 
-{% block stylesheet %}{% endblock %}
+  <title>
+    {% block title %}Portfolio{% endblock title%}
+  </title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Oleksii Ievtushenko">
 
+  {% with personal_info|first as personal_info %}
+  <meta name="keywords" content="{{ personal_info.meta_keywords }}" />
+  <meta name="description" content="{{ personal_info.meta_description }}" />
+    {% for project in projects %}
+    <meta name="keywords" content="{{ project.meta_keywords }}" />
+    <meta name="description" content="{{ project.meta_description }}" />
+    {% endfor %}
+  {% endwith %}
+  <link rel="SHORTCUT ICON" href="{% static 'images/favicon.ico' %}" />
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+<!--  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">-->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <style>
+    body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", sans-serif}
+  </style>
+  {% block stylesheet %}{% endblock %}
+
+</head>
 <body class="w3-light-grey w3-content" style="max-width:1600px">
 
 {% block body %}

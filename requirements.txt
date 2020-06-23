@@ -1,3 +1,4 @@
+appdirs==1.4.4
 asgiref==3.2.7
 beautifulsoup4==4.9.1
 boto==2.49.0
@@ -8,6 +9,7 @@ cffi==1.14.0
 chardet==3.0.4
 cryptography==2.9.2
 defusedxml==0.6.0
+distlib==0.3.0
 dj-database-url==0.5.0
 dj-static==0.0.6
 Django==3.0.6
@@ -20,17 +22,22 @@ django-extensions==2.2.9
 django-heroku==0.3.1
 django-imagekit==4.0.2
 django-js-asset==1.2.2
+django-robots==4.0
+django-social-share==1.4.0
 django-storages==1.9.1
 django-taggit==1.2.0
 docutils==0.15.2
+filelock==3.0.12
 gunicorn==20.0.4
 idna==2.9
+importlib-metadata==1.6.1
 jmespath==0.10.0
 Markdown==3.2.1
 mock==4.0.1
 oauthlib==3.1.0
 pilkit==2.0
 Pillow==7.0.0
+pipenv==2020.6.2
 projects==1.0.9
 psycopg2==2.8.4
 pycparser==2.20
@@ -52,5 +59,8 @@ static3==0.7.0
 termcolor==1.1.0
 urllib3==1.25.8
 urwid==2.1.0
+virtualenv==20.0.23
+virtualenv-clone==0.5.4
 Werkzeug==1.0.1
 whitenoise==5.1.0
+zipp==3.1.0

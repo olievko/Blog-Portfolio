@@ -64,6 +64,7 @@ PyYAML = "==5.3"
 Werkzeug = "==1.0.1"
 psycopg2-binary = "*"
 django-social-share = "*"
+django-robots = "==4.0"
 
 [requires]
 python_version = "3.7"

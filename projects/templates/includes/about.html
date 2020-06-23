@@ -22,7 +22,7 @@
 
 <div class="w3-container w3-padding-large" style="margin-bottom:32px">
     <h4 id="about"><b>About Me</b></h4>
-    <p>{{ personal_info.overview}}</p>
+    <p>{{ personal_info.overview| safe}}</p>
 
     {% if personal_info.years_experience and personal_info.partners and personal_info.completed_projects and personal_info.clients  %}
     <br>
@@ -97,8 +97,8 @@
         </button>
       {% endfor %}
     </div>
-    <p>These prices do depend on the size of your site and the features of your site. Depending on your website, you may pay less (or more) than these estimates.
-    View the average cost for upfront and ongoing website expenses, by business type, below.</p>
+    <p>These prices do depend on the size of your project and the features of your project. Depending on your project, you may pay less (or more) than these estimates.
+    View the average cost for ongoing project expenses, by business type, below.</p>
     <!-- Pricing Tables -->
     <div class="w3-row-padding" style="margin:0 -16px">
 
