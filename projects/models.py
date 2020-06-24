@@ -155,9 +155,9 @@ class Education(models.Model):
         return ' '.join([self.school_name, self.edu_date_range()])
 
 
-def image_folder(instance, filename):
+def job_image_folder(instance, filename):
     filename = instance.slug + '.' + filename.split('.')[1]
-    return "{0}/{1}".format(instance.slug, filename)
+    return "job/{0}/{1}".format(instance.slug, filename)
 
 
 class Job(models.Model):
@@ -169,7 +169,7 @@ class Job(models.Model):
         db_index=True,
         blank=True)
     image = models.ImageField(
-        upload_to=image_folder,
+        upload_to=job_image_folder,
         blank=True)
     location = models.CharField(
         max_length=250,
