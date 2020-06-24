@@ -6,6 +6,14 @@ from .models import Images, Project, Category, PersonalInfo, Job, Education, Ski
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 
 
+class PersonalInfoAdminForm(forms.ModelForm):
+    overview = forms.CharField(label="Overview", widget=CKEditorUploadingWidget())
+
+    class Meta:
+        model = PersonalInfo
+        fields = '__all__'
+
+
 class ProjectAdminForm(forms.ModelForm):
     description = forms.CharField(label="Description", widget=CKEditorUploadingWidget())
 
@@ -25,6 +33,7 @@ class PostAdminForm(forms.ModelForm):
 @admin.register(PersonalInfo)
 class PersonalInfoAdmin(admin.ModelAdmin):
     list_display = ('first_name', 'last_name')
+    form = PersonalInfoAdminForm
 
 
 @admin.register(Education)

@@ -55,7 +55,7 @@
                     <p></p>
                 {% endif %}
             {% endfor %}
-            {{ post.body|markdown }}
+            {{ post.body|safe }}
             <p><a href="{% url 'post_share' post.id %}">Share this post</a></p>
 
              <div class="btn-group">
