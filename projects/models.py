@@ -355,6 +355,7 @@ class Project(models.Model):
         options={'quality': 90})
     project_url = models.URLField(
         'Project URL',
+        null=True,
         blank=True)
     description = models.TextField(blank=True)
     technology = models.CharField(max_length=255)
