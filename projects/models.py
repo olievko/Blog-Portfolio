@@ -353,8 +353,11 @@ class Project(models.Model):
         processors=[ResizeToFill(600, 600)],
         format='JPEG',
         options={'quality': 90})
+    project_url = models.URLField(
+        'Project URL',
+        blank=True)
     description = models.TextField(blank=True)
-    technology = models.CharField(max_length=20)
+    technology = models.CharField(max_length=255)
     meta_keywords = models.CharField(
         max_length=255,
         null=True,
@@ -465,6 +468,7 @@ class Price(models.Model):
         on_delete=models.CASCADE)
 
     class Meta:
+        ordering = ['price']
         verbose_name = 'Price'
         verbose_name_plural = 'Prices'
 

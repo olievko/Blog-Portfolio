@@ -13,6 +13,7 @@
                         <img src="{{ p.thumb.url }}" alt="{{ p.title }}" style="width:100%" class="w3-hover-opacity">
                     </a>
                     <div class="w3-container w3-white">
+                        <br>
                         <p><a href="{{ p.get_absolute_url }}" style="text-decoration: none; color:black"><b>{{ p.title }}</b></a></p>
                         <p><a href="{{ p.get_absolute_url }}" style="text-decoration: none; color:black">{{ p.description| safe | truncatewords:30 }}</a></p>
                     </div>

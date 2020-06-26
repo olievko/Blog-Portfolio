@@ -62,7 +62,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('company', models.CharField(blank=True, max_length=250)),
                 ('slug', models.SlugField(blank=True, max_length=250)),
-                ('image', models.ImageField(blank=True, upload_to=projects.models.image_folder)),
+                ('image', models.ImageField(blank=True, upload_to=projects.models.job_image_folder)),
                 ('location', models.CharField(blank=True, help_text='e.g., Kyiv, Ukraine', max_length=250)),
                 ('title', models.CharField(blank=True, max_length=250)),
                 ('company_url', models.URLField(blank=True, verbose_name='Company URL')),

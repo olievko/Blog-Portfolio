@@ -101,9 +101,11 @@
     View the average cost for ongoing project expenses, by business type, below.</p>
     <!-- Pricing Tables -->
     <div class="w3-row-padding" style="margin:0 -16px">
-
-    {% for p in prices %}
-      {% if p.type == "Simple" %}
+    {% for category in categories %}
+    <br>
+    <p style="text-align: left"><b>{{ category.name }}</b></p>
+    {% for p in category.price_set.all %}
+      {% if p.type == "Simple" and p.is_active %}
       <div class="w3-third w3-margin-bottom">
         <ul class="w3-ul w3-border w3-white w3-center w3-opacity w3-hover-opacity-off">
 
@@ -134,7 +136,7 @@
         </ul>
       </div>
       {% endif %}
-      {% if p.type == "Middle" %}
+      {% if p.type == "Middle" and p.is_active %}
       <div class="w3-third w3-margin-bottom">
         <ul class="w3-ul w3-border w3-white w3-center w3-opacity w3-hover-opacity-off">
             <li class="w3-teal w3-xlarge w3-padding-32">{{ p.type }}</li>
@@ -164,7 +166,7 @@
         </ul>
       </div>
       {% endif %}
-      {% if p.type == "Complex" %}
+      {% if p.type == "Complex" and p.is_active %}
       <div class="w3-third">
         <ul class="w3-ul w3-border w3-white w3-center w3-opacity w3-hover-opacity-off">
             <li class="w3-black w3-xlarge w3-padding-32">{{ p.type }}</li>
@@ -194,6 +196,7 @@
         </ul>
       </div>
       {% endif %}
+    {% endfor %}
     {% endfor %}
     </div>
   </div>
