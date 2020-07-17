@@ -4,30 +4,75 @@ from .models import Comment
 
 
 class ContactForm(forms.Form):
-    contact_name = forms.CharField(max_length=100, widget=forms.TextInput())
-    contact_email = forms.EmailField(widget=forms.TextInput())
-    subject = forms.CharField(max_length=100, widget=forms.TextInput())
-    message = forms.CharField(widget=forms.Textarea())
+    contact_name = forms.CharField(
+        max_length=250,
+        label='Contact Name',
+        widget=forms.TextInput(attrs={
+            "class": "w3-input w3-border",
+        })
+    )
+    contact_email = forms.EmailField(
+        label='Contact Email',
+        widget=forms.TextInput(attrs={
+            "class": "w3-input w3-border",
+        })
+    )
+    subject = forms.CharField(
+        max_length=250,
+        label='Subject',
+        widget=forms.TextInput(attrs={
+            "class": "w3-input w3-border",
+        })
+    )
+    message = forms.CharField(
+        label='Message',
+        widget=forms.Textarea(attrs={
+            "class": "w3-input w3-border",
+        })
+    )
     cc_myself = forms.BooleanField(required=False)
 
 
 class EmailPostForm(forms.Form):
-    name = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'size': '100', 'class': 'form-control'}))
-    email = forms.EmailField(widget=forms.TextInput(attrs={'size': '100', 'class': 'form-control'}))
-    to = forms.EmailField(widget=forms.TextInput(attrs={'size': '100', 'class': 'form-control'}))
-    comments = forms.CharField(required=False, widget=forms.Textarea(attrs={'cols': '100', 'class': 'form-control'}))
+    name = forms.CharField(
+        max_length=100,
+        widget=forms.TextInput(attrs={
+            'class': 'w3-input w3-border '
+        })
+    )
+    email = forms.EmailField(
+        widget=forms.TextInput(attrs={
+            'class': 'w3-input w3-border'
+        })
+    )
+    to = forms.EmailField(
+        widget=forms.TextInput(attrs={
+            'class': 'w3-input w3-border'
+        })
+    )
+    comments = forms.CharField(
+        required=False,
+        widget=forms.Textarea(attrs={
+            'class': 'w3-input w3-border'
+        })
+    )
 
 
-class CommentForm(forms.ModelForm):
-    class Meta:
-        model = Comment
-        fields = ('name', 'email', 'body')
-        widgets = {
-            'name': TextInput(attrs={'size': 100}),
-            'email': TextInput(attrs={'size': 100}),
-            'body': Textarea(attrs={'cols': 100}),
-        }
+class CommentForm(forms.Form):
+    content_type = forms.CharField(widget=forms.HiddenInput)
+    object_id = forms.IntegerField(widget=forms.HiddenInput)
+    content = forms.CharField(
+        label='',
+        widget=forms.Textarea(attrs={
+            'class': 'w3-input w3-border'
+        })
+    )
 
 
 class SearchForm(forms.Form):
-    query = forms.CharField()
+    query = forms.CharField(
+        label='',
+        widget=forms.TextInput(attrs={
+            'placeholder': 'Search posts..',
+        })
+    )

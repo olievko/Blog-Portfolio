@@ -1,5 +1,7 @@
 {% load crispy_forms_tags %}
+{% load static %}
 <div class="w3-container w3-padding-large w3-grey">
+
     <h4 id="contact"><b>Contact Me</b></h4>
     {% with personal_info|first as personal_info %}
     <div class="w3-row-padding w3-center w3-padding-24" style="margin:0 -16px">
@@ -25,11 +27,12 @@
     {% endwith %}
 
     <hr class="w3-opacity">
-    <div class="container">
-        <form method="post" novalidate>
+    <div class="w3 container">
+        <form action="." method="post" novalidate>
           {% csrf_token %}
           {{ form|crispy }}
+          <br>
           <button type="submit" class="w3-button w3-black w3-margin-bottom"><i class="fa fa-paper-plane w3-margin-right"></i>Send Message</button>
         </form>
     </div>
-  </div>
+</div>

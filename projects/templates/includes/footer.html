@@ -30,37 +30,36 @@
       <ul class="w3-ul w3-hoverable">
         {% for post in most_commented_posts %}
         <li class="w3-padding-16">
-            <span class="w3-large"><a href="{{ post.get_absolute_url }}" style="text-decoration: none; color: white">{{ post.title }}</a></span>
+            <span class="w3-large">
+              <a href="{{ post.get_absolute_url }}" style="text-decoration: none; color: white">
+                {{ post.title }}
+              </a>
+            </span>
         </li>
         {% endfor %}
       </ul>
     </div>
-    <div class="w3-third">
+    <p class="w3-third">
       <h3>POPULAR TAGS</h3>
       <p>
         {% for tag in common_tags %}
-<!--        <span class="w3-tag w3-black w3-margin-bottom">Travel</span>-->
           <span class="w3-tag w3-grey w3-small w3-margin-bottom">
-              <a href="{% url 'post_list_by_tag' tag.slug %}" style="text-decoration:none; color: white">{{ tag.name }}</a>
+              <a href="{% url 'post_list_by_tag' tag.slug %}" style="text-decoration:none; color: white">
+                {{ tag.name }}
+              </a>
           </span>
         {% endfor %}
       </p>
       <br>
       <h4>PAYMENT METHODS</h4>
-      <div class="row">
-        <div class="column">
+      <p>
+        <span class="w3-small w3-margin-bottom">
           <img src="{% static 'images/visa128.png' %}" style="width: 100px" class=" w3-left w3-margin w3-hover-opacity">
-        </div>
-        <div class="column">
           <img src="{% static 'images/master128.png' %}" style="width: 100px" class=" w3-left w3-margin w3-hover-opacity">
-        </div>
-        <div class="column">
           <img src="{% static 'images/paypal128.png' %}" style="width: 100px" class=" w3-left w3-margin w3-hover-opacity">
-        </div>
-        <div class="column">
           <img src="{% static 'images/Privat.jpg' %}" style="width: 100px;" class=" w3-left w3-margin w3-hover-opacity">
-        </div>
-      </div>
+        </span>
+      </p>
     </div>
 
   </div>

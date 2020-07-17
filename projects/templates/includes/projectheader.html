@@ -14,8 +14,8 @@
             {% endfor %}
 
             <div class="search-container">
-                 <form action="{% url 'post_search' %}">
-                     <input type="text" placeholder="Search.." name="search">
+                 <form action="{% url 'posts_search' %}">
+                     <input name="q" type="text" placeholder="Search posts..">
                      <button type="submit"><i class="fa fa-search"></i></button>
                  </form>
             </div>

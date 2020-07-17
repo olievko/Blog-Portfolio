@@ -1,9 +1,7 @@
 {% extends "index.html" %}
 {% load static %}
 {% block stylesheet %}
-<link rel="stylesheet" href="{% static 'css/topnav.css' %}">
 <style>
-
 .btn-group button {
     background-color: none; /* Green background */
     border: 1px solid green; /* Green border */
@@ -31,43 +29,38 @@
 </style>
 {% endblock %}
 {% block title %}Project detail{% endblock %}
-{% load crispy_forms_tags %}
+<!--{% load crispy_forms_tags %}-->
 {% load social_share %}
+
 {% block portfolio %}
-
 {% include "includes/projectheader.html"%}
-
 <div class="w3-row-padding">
     <div class="w3-half">
 
         {% for item in images %}
-        <a href="{{ project.project_url }}"><img src="{{ item.image.url }}" alt="{{ item.caption }}" width="100%" style="border: 2px solid"></a>
+        {% if project.project_url %}
+            <a href="{{ project.project_url }}"><img src="{{ item.image.url }}" alt="{{ item.caption }}" width="100%" style="border: 2px solid"></a>
+        {% else %}
+            <img src="{{ item.image.url }}" alt="{{ item.caption }}" width="100%" style="border: 2px solid">
+        {% endif %}
+        <div class="w3-light-grey w3-padding-24">
+            <button class="w3-button w3-teal w3-padding-large w3-hover-black"><a href="#contact" style="text-decoration: none; color: white">Project Inquiry</a></button>
+            {% if project.report_file.url %}
+            <button class="w3-button w3-dark-grey w3-padding-large w3-margin-top w3-margin-bottom">
+                <i class="fa fa-download w3-margin-right"></i><a href="{{ project.report_file.url }}" style="text-decoration: none; color: white">Download Report</a>
+            </button>
+            {% endif %}
+        </div>
         {% endfor %}
     </div>
     <div class="w3-half">
         <h5><b>About the project:</b></h5>
         <p>{{ project.description|safe }}</p>
-        <br>
         <h5><b>Technologies used:</b></h5>
         <p>{{ project.technology }}</p>
-        <br>
+        {% if project.project_url %}
         <h5><b>Project URL:</b> <a href="{{ project.project_url }}">{{ project.project_url }}</a></h5>
-        <br>
-        <h5><b>Share project on:</b></h5>
-        <div class="btn-group">
-            <button>
-                {% post_to_facebook object_or_url '<i class="fa fa-facebook" style="padding:10px; font-size:30px; width:50px; text-align:center; text-decoration:none; margin:5px 2px; background:#3B5998; color:white;"></i>' %}
-            </button>
-            <button>
-                {% post_to_twitter "New Project: {{project.title}}. Check it out!" object_or_url '<i class="fa fa-twitter" style="padding:10px; font-size:30px; width:50px; text-align:center; text-decoration:none; margin:5px 2px; background:#55ACEE; color:white;"></i>' %}
-            </button>
-            <button>
-                {% post_to_linkedin project.title object_or_url '<i class="fa fa-linkedin" style="padding:10px; font-size:30px; width:50px; text-align:center; text-decoration:none; margin:5px 2px; background: #007bb5; color:white;"></i>' %}
-            </button>
-            <button>
-                {% send_email project.title "New Project: {{project.title}}. Check it out!" object_or_url '<i class="fa fa-envelope" style="padding:10px; font-size:30px; width:50px; text-align:center; text-decoration:none; margin:5px 2px; background: #dd4b39; color: white;"></i>' %}
-            </button>
-        </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

@@ -1,17 +1,18 @@
 {% extends "index.html" %}
 {% load static %}
-{% block stylesheet %}
-<link rel="stylesheet" href="{% static 'css/topnav.css' %}">
-{% endblock %}
-
+{% block stylesheet %}{% endblock %}
 {% block portfolio %}
 {% include "includes/projectheader.html"%}
     <div class="w3-row-padding">
             {% for p in projects %}
                 <div class="w3-third w3-container w3-margin-bottom">
+                    {% if p.image %}
                     <a href="{{ p.get_absolute_url }}">
                         <img src="{{ p.thumb.url }}" alt="{{ p.title }}" style="width:100%" class="w3-hover-opacity">
                     </a>
+                    {% else %}
+                        <p></p>
+                    {% endif %}
                     <div class="w3-container w3-white">
                         <br>
                         <p><a href="{{ p.get_absolute_url }}" style="text-decoration: none; color:black"><b>{{ p.title }}</b></a></p>
@@ -20,4 +21,7 @@
                 </div>
             {% endfor %}
     </div>
+<!-- Pagination -->
+{% include "includes/pagination.html" with page=projects %}
+
 {% endblock portfolio %}

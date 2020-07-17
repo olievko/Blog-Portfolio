@@ -1,17 +1,9 @@
 # -*- coding: utf-8 -*-
 from django import forms
 from django.contrib import admin
-from .models import Images, Project, Category, PersonalInfo, Job, Education, Skillset, Skill, LangSkill, Price, PostImages, Post, Comment
+from .models import Images, Project, ProjectCategory, PersonalInfo, Job, Education, Skillset, Skill, LangSkill, Price, PostImages, Post, Comment
 
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
-
-
-class PersonalInfoAdminForm(forms.ModelForm):
-    overview = forms.CharField(label="Overview", widget=CKEditorUploadingWidget())
-
-    class Meta:
-        model = PersonalInfo
-        fields = '__all__'
 
 
 class ProjectAdminForm(forms.ModelForm):
@@ -32,8 +24,7 @@ class PostAdminForm(forms.ModelForm):
 
 @admin.register(PersonalInfo)
 class PersonalInfoAdmin(admin.ModelAdmin):
-    list_display = ('first_name', 'last_name')
-    form = PersonalInfoAdminForm
+    pass
 
 
 @admin.register(Education)
@@ -43,7 +34,8 @@ class EducationAdmin(admin.ModelAdmin):
 
 @admin.register(Job)
 class JobAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('company', 'slug', 'title', 'is_current',)
+    prepopulated_fields = {'slug': ('company',)}
 
 
 @admin.register(Skillset)
@@ -64,8 +56,8 @@ class LangSkillAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name', )}
 
 
-@admin.register(Category)
-class CategoryAdmin(admin.ModelAdmin):
+@admin.register(ProjectCategory)
+class ProjectCategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'slug', 'is_active', )
     list_display_links = ('name',)
     ordering = ['name']
@@ -119,6 +111,10 @@ class PostAdmin(admin.ModelAdmin):
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ('name', 'email', 'post', 'created', 'active')
-    list_filter = ('active', 'created', 'updated')
-    search_fields = ('name', 'email', 'body')
+    list_display = ('user', 'content_type', 'object_id', 'content_object', 'timestamp', 'active')
+    list_filter = ('active', 'timestamp')
+    search_fields = ('user', 'content')
+    actions = ['approve_comments']
+
+    def approve_comments(self, request, queryset):
+        queryset.update(active=True)

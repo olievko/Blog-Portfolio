@@ -6,22 +6,8 @@
 {% load crispy_forms_tags %}
 {% block page %}
 
-<header id="portfolio">
-    <a href="#"><img src="/w3images/avatar_g2.jpg" style="width:65px;" class="w3-circle w3-right w3-margin w3-hide-large w3-hover-opacity"></a>
-    <span class="w3-button w3-hide-large w3-xxlarge w3-hover-text-grey" onclick="w3_open()"><i class="fa fa-bars"></i></span>
-    <div class="w3-container">
-        <h1><b>My Blog</b></h1>
-        <div class="w3-section w3-bottombar w3-padding-16">
-        <span class="w3-margin-right">Tags:</span>
-        <button class="w3-button w3-black "><a href="{% url 'project_list' %}" style="text-decoration: none; color: white">ALL</a></button>
-        {% for tag in post.tags.all %}
-        <button class="w3-button w3-white "><a href="{% url 'post_list_by_tag' tag.slug %}" style="text-decoration:none;">{{ tag.name }}</a></button>
-        {% endfor %}
-    </div>
-    </div>
-</header>
+{% include "includes/blogheader.html"%}
 
-<div class="w3-row-padding">
     <div class="w3-container w3-padding-large w3-grey">
         {% if sent %}
             <h4>E-mail successfully sent</h4>
@@ -39,7 +25,7 @@
             </div>
         {% endif %}
     </div>
-</div>
+
   <!-- Footer -->
     {% include "includes/footer.html"%}
     <!-- End page content -->

@@ -51,6 +51,11 @@ input:hover,
   color: white;
 }
 
+.linkedin {
+  background-color: #0072b1;
+  color: white;
+}
+
 .google {
   background-color: #dd4b39;
   color: white;
@@ -178,8 +183,8 @@ input[type=text], input[type=password] {
 
       <div class="col">
         <a href='{% provider_login_url "facebook" method="oauth2" %}' class="fb btn"><i class="fa fa-facebook fa-fw"></i> Login with Facebook</a>
-        <a href="#" class="twitter btn"><i class="fa fa-twitter fa-fw"></i> Login with Twitter</a>
-        <a href="#" class="google btn"><i class="fa fa-google fa-fw"></i> Login with Google+</a>
+        <a href='{% provider_login_url "linkedin" %}' class="linkedin btn"><i class="fa fa-linkedin fa-fw"></i> Login with Linkedin</a>
+        <a href='{% provider_login_url "google" %}' class="google btn"><i class="fa fa-google fa-fw"></i> Login with Google</a>
       </div>
 
       <div class="col">

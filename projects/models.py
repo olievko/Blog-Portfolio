@@ -1,9 +1,12 @@
 from django.db import models
+from django.conf import settings
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.urls import reverse
 from imagekit.models import ImageSpecField
-from imagekit.processors import ResizeToFill
+from imagekit.processors import ResizeToFill, ResizeToFit
 from taggit.managers import TaggableManager
 import time
 
@@ -13,8 +16,8 @@ class PersonalInfo(models.Model):
         ('Dr', 'Doctor'),
         ('PhD', 'Doctor of Philosophy'),
     )
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
+    first_name = models.CharField(max_length=250)
+    last_name = models.CharField(max_length=250)
     title = models.CharField(
         max_length=50,
         default=False,
@@ -93,8 +96,7 @@ class Education(models.Model):
     )
     school_name = models.CharField(
         max_length=250,
-        help_text="e.g., Tbilisi State University",
-        blank=True)
+        help_text="e.g., Tbilisi State University")
     institute_or_faculty = models.CharField(
         max_length=250,
         help_text="e.g., Institute of Economics",
@@ -105,12 +107,10 @@ class Education(models.Model):
         blank=True)
     degree = models.CharField(
         max_length=50,
-        choices=DEGREE_CHOICES,
-        blank=True)
+        choices=DEGREE_CHOICES)
     qualification = models.CharField(
         max_length=250,
-        help_text="e.g., Economist",
-        blank=True)
+        help_text="e.g., Economist")
     location = models.CharField(
         max_length=250,
         help_text="e.g., Kyiv, Ukraine",
@@ -122,7 +122,7 @@ class Education(models.Model):
     completion_date = models.DateField()
     summary = models.TextField(
         blank=True,
-        help_text="e.g., Diploma with Honours")
+        help_text="e.g., Diploma with honors")
     is_current = models.BooleanField(default=False)
 
     class Meta:
@@ -162,8 +162,7 @@ def job_image_folder(instance, filename):
 
 class Job(models.Model):
     company = models.CharField(
-        max_length=250,
-        blank=True)
+        max_length=250)
     slug = models.SlugField(
         max_length=250,
         db_index=True,
@@ -176,12 +175,11 @@ class Job(models.Model):
         help_text="e.g., Kyiv, Ukraine",
         blank=True)
     title = models.CharField(
-        max_length=250,
-        blank=True)
+        max_length=250)
     company_url = models.URLField(
         'Company URL',
         blank=True)
-    description = models.TextField(blank=True)
+    description = models.TextField()
     start_date = models.DateField()
     completion_date = models.DateField()
     is_current = models.BooleanField(default=False)
@@ -226,19 +224,19 @@ class ActiveCategoryManager(models.Manager):
         return super(ActiveCategoryManager, self).get_query_set().filter(is_active=True)
 
 
-class Category(models.Model):
-    name = models.CharField(max_length=50)
+class ProjectCategory(models.Model):
+    name = models.CharField(max_length=250)
     slug = models.SlugField(
-        max_length=50,
+        max_length=250,
         unique=True,
         help_text='Unique value for product page URL, created automatically from name.')
     is_active = models.BooleanField(default=True)
     meta_keywords = models.CharField(
-        max_length=255,
+        max_length=250,
         help_text='Comma-delimited set of SEO keywords for keywords meta tag',
         blank=True)
     meta_description = models.CharField(
-        max_length=255,
+        max_length=250,
         help_text='Content for description meta tag',
         blank=True)
     objects = models.Manager()
@@ -261,13 +259,23 @@ class Skillset(models.Model):
     name = models.CharField(
         max_length=250,
         blank=True)
-    slug = models.SlugField(max_length=250)
+    slug = models.SlugField(
+        max_length=250,
+        blank=True)
     is_active = models.BooleanField(default=True)
     category = models.ForeignKey(
-        'Category',
+        'ProjectCategory',
         null=True,
         blank=True,
         on_delete=models.CASCADE)
+    meta_keywords = models.CharField(
+        max_length=250,
+        help_text='Comma-delimited set of SEO keywords for keywords meta tag',
+        blank=True)
+    meta_description = models.CharField(
+        max_length=250,
+        help_text='Content for description meta tag',
+        blank=True)
 
     def __str__(self):
         return self.name
@@ -276,11 +284,9 @@ class Skillset(models.Model):
 class Skill(models.Model):
     name = models.CharField(
         max_length=250,
-        help_text="e.g., C++, Python",
-        blank=True)
+        help_text="e.g., C++, Python")
     slug = models.SlugField(
-        max_length=250,
-        blank=True)
+        max_length=250)
     level = models.IntegerField(
         default=False,
         help_text="Indicate your level skill in percentage")
@@ -290,6 +296,14 @@ class Skill(models.Model):
         null=True,
         blank=True,
         on_delete=models.CASCADE)
+    meta_keywords = models.CharField(
+        max_length=250,
+        help_text='Comma-delimited set of SEO keywords for keywords meta tag',
+        blank=True)
+    meta_description = models.CharField(
+        max_length=250,
+        help_text='Content for description meta tag',
+        blank=True)
 
     class Meta:
         ordering = ['id']
@@ -303,11 +317,9 @@ class Skill(models.Model):
 class LangSkill(models.Model):
     name = models.CharField(
         max_length=250,
-        help_text="Ukrainian, English",
-        blank=True)
+        help_text="Ukrainian, English")
     slug = models.SlugField(
-        max_length=250,
-        blank=True)
+        max_length=250)
     level = models.IntegerField(
         default=False,
         help_text="Indicate your level skill in percentage")
@@ -345,12 +357,12 @@ class Project(models.Model):
         blank=True)
     image_thumbnail = ImageSpecField(
         source='image',
-        processors=[ResizeToFill(600, 450)],
+        processors=[ResizeToFill(850, 550)],
         format='JPEG',
         options={'quality': 90})
     thumb = ImageSpecField(
         source='image',
-        processors=[ResizeToFill(600, 600)],
+        processors=[ResizeToFit(600, 600)],
         format='JPEG',
         options={'quality': 90})
     project_url = models.URLField(
@@ -359,6 +371,10 @@ class Project(models.Model):
         blank=True)
     description = models.TextField(blank=True)
     technology = models.CharField(max_length=255)
+    report_file = models.FileField(
+        upload_to='report/%Y/%m/%d/',
+        null=True,
+        blank=True)
     meta_keywords = models.CharField(
         max_length=255,
         null=True,
@@ -373,7 +389,7 @@ class Project(models.Model):
     added = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     category = models.ForeignKey(
-        'Category',
+        'ProjectCategory',
         null=True,
         blank=True,
         on_delete=models.CASCADE)
@@ -439,17 +455,15 @@ class Price(models.Model):
         choices=TYPE_CHOICES,
         default='Simple')
     support = models.CharField(
-        max_length=255,
+        max_length=250,
         blank=True,
         choices=SUPPORT_CHOICES,
         default='Mail Support')
     name = models.CharField(
-        max_length=255,
-        blank=True,
+        max_length=250,
         help_text="Project name")
     instrument = models.CharField(
-        max_length=255,
-        blank=True,
+        max_length=250,
         default="Django")
     description = models.TextField(
         blank=True,
@@ -459,14 +473,21 @@ class Price(models.Model):
         blank=True)
     price = models.DecimalField(
         max_digits=9,
-        decimal_places=2,
-        blank=True)
+        decimal_places=2)
     is_active = models.BooleanField(default=True)
     category = models.ForeignKey(
-        'Category',
+        'ProjectCategory',
         null=True,
         blank=True,
         on_delete=models.CASCADE)
+    meta_keywords = models.CharField(
+        max_length=250,
+        help_text='Comma-delimited set of SEO keywords for keywords meta tag',
+        blank=True)
+    meta_description = models.CharField(
+        max_length=250,
+        help_text='Content for description meta tag',
+        blank=True)
 
     class Meta:
         ordering = ['price']
@@ -495,6 +516,7 @@ class Post(models.Model):
         User,
         on_delete=models.CASCADE)
     body = models.TextField()
+
     image = models.ImageField(
         upload_to=blog_image_folder,
         blank=True)
@@ -515,6 +537,14 @@ class Post(models.Model):
         max_length=10,
         choices=STATUS_CHOICES,
         default='draft')
+    meta_keywords = models.CharField(
+        max_length=250,
+        help_text='Comma-delimited set of SEO keywords for keywords meta tag',
+        blank=True)
+    meta_description = models.CharField(
+        max_length=250,
+        help_text='Content for description meta tag',
+        blank=True)
     objects = models.Manager()
     published = PublishedManager()
     tags = TaggableManager()
@@ -531,6 +561,18 @@ class Post(models.Model):
                              self.publish.month,
                              self.publish.day,
                              self.slug])
+
+    @property
+    def comments(self):
+        instance = self
+        qs = Comment.objects.filter_by_instance(instance)
+        return qs
+
+    @property
+    def get_content_type(self):
+        instance = self
+        content_type = ContentType.objects.get_for_model(instance.__class__)
+        return content_type
 
 
 class PostImages(models.Model):
@@ -565,20 +607,44 @@ class PostImages(models.Model):
         return self.caption
 
 
+class CommentManager(models.Manager):
+    def all(self):
+        qs = super(CommentManager, self).filter(parent=None)
+        return qs
+
+    def filter_by_instance(self, instance):
+        content_type = ContentType.objects.get_for_model(instance.__class__)
+        obj_id = instance.id
+        qs = super(CommentManager, self).filter(content_type=content_type, object_id=obj_id).filter(parent=None)
+        return qs
+
+
 class Comment(models.Model):
-    post = models.ForeignKey(
-        Post,
-        on_delete=models.CASCADE,
-        related_name='comments')
-    name = models.CharField(max_length=100)
-    email = models.EmailField()
-    body = models.TextField()
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
-    active = models.BooleanField(default=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1, on_delete=models.CASCADE)
+
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, null=True, blank=True)
+    object_id = models.PositiveIntegerField(null=True, blank=True)
+    content_object = GenericForeignKey('content_type', 'object_id')
+
+    parent = models.ForeignKey("self", null=True, blank=True, on_delete=models.CASCADE)
+
+    content = models.TextField(null=True, blank=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    active = models.BooleanField(default=False)
+
+    objects = CommentManager()
 
     class Meta:
-        ordering = ('created',)
+        ordering = ['-timestamp']
 
     def __str__(self):
-        return 'Comment by {} on {}'.format(self.name, self.post)
+        return str(self.user.username)
+
+    def children(self):
+        return Comment.objects.filter(parent=self)
+
+    @property
+    def is_parent(self):
+        if self.parent is not None:
+            return False
+        return True
