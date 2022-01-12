@@ -39,7 +39,7 @@ mock==4.0.1
 oauthlib==3.1.0
 pilkit==2.0
 Pillow==7.0.0
-pipenv==2020.6.2
+pipenv==2022.1.8
 projects==1.0.9
 psycopg2==2.8.4
 pycparser==2.20
